@@ -1,0 +1,35 @@
+{
+    "name": "Github Markdown Router",
+    "description": "Generate Directory Tree for Markdown on Github",
+    "version": "1.0",
+    "manifest_version": 2,
+    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "page_action": {
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "images/icon16.png",
+            "32": "images/icon32.png",
+            "48": "images/icon48.png",
+            "128": "images/icon128.png"
+        }
+    },
+    "icons": {
+        "16": "images/icon16.png",
+        "32": "images/icon32.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+    },
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+M",
+                "mac": "MacCtrl+Shift+M"
+            },
+            "description": "Show Directory Tree"
+        }
+    }
+}
