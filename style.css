@@ -1,0 +1,10 @@
+.md-nav {
+    position: fixed !important;
+    overflow: visible;
+    top: 80px;
+    right: 0px;
+    left: 40px;
+    bottom: 0px;
+    width: 300px;
+    z-index: 999999;
+}

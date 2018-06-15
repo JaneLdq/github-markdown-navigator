@@ -1,2 +1,2 @@
-# github-md-directory-tree
-A chrome extension to generate directory tree for markdown on github
+# github-md-nav
+A chrome extension to generate navigation tree for markdown on github

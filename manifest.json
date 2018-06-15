@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Github Markdown Router",
-    "description": "Generate Directory Tree for Markdown on Github",
+    "name": "Github Markdown Nav",
+    "description": "Generate Navigation Tree for Markdown on Github",
     "version": "1.0",
     "permissions": ["activeTab", "declarativeContent", "storage"],
     "background": {
