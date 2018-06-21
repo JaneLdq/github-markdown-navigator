@@ -20,8 +20,15 @@ class TreeRenderer {
 	}
 
 	render() {
-		let nav = '<nav class="md-nav">' + this._renderTree(this.tree) + '</nav>';
+		let nav = '<nav class="md-nav">' + 
+			this._renderHeader() +
+			this._renderTree(this.tree) + 
+			'</nav>';
 		$('body').append(nav);
+	}
+
+	_renderHeader() {
+		return '<div class="md-nav-header">MD-Nav</div>'
 	}
 
 	_renderTree(root) {
