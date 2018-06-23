@@ -1,38 +1,33 @@
-nav {
-	display: block;
-
-}
-
 .md-nav {
+	display: block;
     position: fixed !important;
     top: 0;
     left: 0;
     z-index: 999999;
 
     margin-left: -10px;
-    width: 240px;
+    width: 270px;
     height: 100%;
     padding: 10px;
-
     overflow-x: scroll;
 
     border: none;
     border-right: 1px rgba(40, 40, 40);
-    background-color: rgba(40, 40, 40, 0.8);
+    background-color: rgba(40, 40, 40);
 
     font-family: sans-serif;
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .md-nav-header {
-	width: 250px;
+	width: 280px;
 	padding: 10px 10px 10px 20px;
 	margin: -10px -10px 10px -10px;
 	height: 40px;
 
 	border-bottom: 1px rgb(200, 200, 200);
-	background-color: rgb(80, 80, 80);
 	font-size: 20px;
-	color: #eee;
+	color: rgb(140, 180, 255);
 }
 
 .md-nav ul { 
@@ -48,7 +43,7 @@ nav {
 	white-space: nowrap;
 	text-decoration:none;
 	font-size: 14px;
-	line-height: 120%;
+	line-height: 160%;
 	color: #eee;
 	transition: color 0.2s;
 }
