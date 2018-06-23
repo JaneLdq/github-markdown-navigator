@@ -1,6 +1,7 @@
 const GH_CONTAINERS = '.container, .container-lg, .container-responsive'
 const SPACING = 10
 const SIDERBARWIDTH = 260
+const MIN_SIDEBARWIDTH = 160
 class TreeNode {
 
 	constructor(level, content, parent) {
@@ -25,14 +26,11 @@ class TreeRenderer {
 	render() {
 		let nav = '<nav class="md-nav">' + 
 			this.renderHeader() +
-			this.renderTree(this.tree) + 
+			this.renderTree(this.tree) +
 			'</nav>'
 		$('body').append(nav)
-		// $('.js-header-wrapper, #js-flash-container, .application-main, .footer').css({
-		// 	position: "relative",
-		// 	left: "230px"
-		// })
 		this.updateLayout(SIDERBARWIDTH)
+		$('.md-nav').resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
 	}
 
 	updateLayout(sidebarWidth) {
@@ -62,6 +60,7 @@ class TreeRenderer {
 		html += '</ul>'
 		return html
 	}
+
 }
 
 class TreeGenerator {

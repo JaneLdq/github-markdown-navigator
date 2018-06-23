@@ -19,8 +19,8 @@
     "content_scripts": [
         {
           "matches": ["*://github.com/*"],
-          "css": ["style.css"],
-          "js": ["jquery.min.js", "content.js"]  
+          "css": ["libs/jquery-ui.min.css", "style.css"],
+          "js": ["libs/jquery.min.js", "libs/jquery-ui.min.js", "content.js"]  
         }
 
     ],
