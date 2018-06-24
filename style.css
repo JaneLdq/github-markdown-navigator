@@ -5,7 +5,6 @@
     left: 0;
     z-index: 999999;
 
-    margin-left: -10px;
     width: 270px;
     height: 100%;
     padding: 10px;
@@ -21,7 +20,7 @@
 
 .md-nav-header {
 	width: 280px;
-	padding: 10px 10px 10px 20px;
+	padding: 10px;
 	margin: -10px -10px 10px -10px;
 	height: 40px;
 
@@ -30,11 +29,13 @@
 	color: rgb(140, 180, 255);
 }
 
-.md-nav ul { 
+.md-nav ul {
 	list-style-type: none;
 	list-style-position: outside;
-	padding-left: 10px;
-	padding-right: 10px;
+}
+
+.md-nav ul ul {
+	padding-left: 14px;
 }
 
 .md-nav ul>li a {
@@ -48,6 +49,11 @@
 	transition: color 0.2s;
 }
 
-.md-nav ul>li a:hover {
+.md-nav ul>li a:hover, 
+.md-nav ul .item-selected {
 	color: rgb(140, 180, 255);
+}
+
+.ui-resizable-e {
+	width: 10px;
 }

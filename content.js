@@ -2,6 +2,7 @@ const GH_CONTAINERS = '.container, .container-lg, .container-responsive'
 const SPACING = 10
 const SIDERBARWIDTH = 260
 const MIN_SIDEBARWIDTH = 160
+
 class TreeNode {
 
 	constructor(level, content, parent) {
@@ -30,7 +31,16 @@ class TreeRenderer {
 			'</nav>'
 		$('body').append(nav)
 		this.updateLayout(SIDERBARWIDTH)
-		$('.md-nav').resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
+		const $nav = $('.md-nav');
+		$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
+		$nav.resize(() => {
+			this.updateLayout($nav.outerWidth())
+		})
+		$('.md-nav ul>li a').on('click', (evt)=>{
+			$('.js-nav-item').removeClass("item-selected");
+			$(evt.target).addClass('item-selected');
+		})
+		// $('.md-nav ul').selectable()
 	}
 
 	updateLayout(sidebarWidth) {
@@ -39,7 +49,7 @@ class TreeRenderer {
 		const shouldPushLeft = autoMarginLeft <= sidebarWidth + SPACING
 
 		$('html').css('margin-left', shouldPushLeft ? sidebarWidth : '')
-		$containers.css('margin-left', shouldPushLeft ? SPACING : '')
+		// $containers.css('margin-left', shouldPushLeft ? SPACING : '')
 	}
 
 	renderHeader() {
@@ -50,7 +60,7 @@ class TreeRenderer {
 		let html = '<ul>'
 		if(root.children && root.children.length) {
 			root.children.forEach((node) => {
-				html += '<li><a href="' + node.content.href + '">' + node.content.text + '</a>'
+				html += '<li><a href="' + node.content.href + '" class="js-nav-item">' + node.content.text + '</a>'
 				if (node.children && node.children.length) {
 					html += this.renderTree(node)
 				}
