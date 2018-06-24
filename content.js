@@ -20,15 +20,16 @@ class TreeNode {
 
 class TreeRenderer {
 
-	constructor(tree) {
-		this.tree = tree
+	constructor() {
+		this.generator = new TreeGenerator()
+		this.tree = this.generator.generate()
 	}
 
 	render() {
 		let nav = '<nav class="md-nav">' + 
-			this.renderHeader() +
-			this.renderTree(this.tree) +
-			'</nav>'
+		this.renderHeader() +
+		'<div id="md-nav-tree">' + this.renderTree(this.tree) + '</div>' +
+		'</nav>'
 		$('body').append(nav)
 		this.updateLayout(SIDERBARWIDTH)
 		const $nav = $('.md-nav');
@@ -40,7 +41,12 @@ class TreeRenderer {
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
 		})
-		// $('.md-nav ul').selectable()
+	}
+
+	rerender() {
+		this.tree = this.generator.generate()
+		$('#md-nav-tree').empty()
+		this.render()
 	}
 
 	updateLayout(sidebarWidth) {
@@ -49,7 +55,6 @@ class TreeRenderer {
 		const shouldPushLeft = autoMarginLeft <= sidebarWidth + SPACING
 
 		$('html').css('margin-left', shouldPushLeft ? sidebarWidth : '')
-		// $containers.css('margin-left', shouldPushLeft ? SPACING : '')
 	}
 
 	renderHeader() {
@@ -71,12 +76,17 @@ class TreeRenderer {
 		return html
 	}
 
+	destory() {
+		$('.md-nav').remove()
+		this.updateLayout(0)
+	}
+
 }
 
 class TreeGenerator {
 
 	generate() {
-		let rootNode = new TreeNode(0, null, null)
+		const rootNode = new TreeNode(0, null, null)
 		let parent = rootNode
 		let cursor = rootNode
 		$('.readme .markdown-body :header').each((idx, obj) => {
@@ -109,8 +119,8 @@ class TreeGenerator {
 if ($('.readme').length) {
 	console.log("[MARKDOWN ROUTER]: START generating directory tree...")
 
-	let tree = new TreeGenerator().generate()
-	let renderer = new TreeRenderer(tree)
+	let oldUrl = window.location.href
+	const renderer = new TreeRenderer()
 	renderer.render()
 
 	console.log("[MARKDOWN ROUTER]: generating directory tree FINISHED.")
