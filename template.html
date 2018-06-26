@@ -1,0 +1,10 @@
+{{#each items}}
+    <li>
+        <a href="{{content.href}}" class="js-nav-item">{{content.text}}</a>
+        {{#if items}}
+            <ul>
+            {{> list}}
+            </ul>
+        {{/if}}
+    </li>
+{{/each}}

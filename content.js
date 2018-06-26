@@ -9,11 +9,13 @@ class TreeNode {
 		this.level = level
 		this.content = content
 		this.parent = parent
-		this.children = []
+		this.items = null
 	}
 
 	addChild(child) {
-		this.children.push(child)
+		if (!this.items)
+			this.items = []
+		this.items.push(child)
 	}
 
 }
@@ -25,17 +27,38 @@ class TreeRenderer {
 		this.tree = this.generator.generate()
 	}
 
+	init() {
+		this.render()
+		this.addListener()
+	}
+
 	render() {
-		let nav = '<nav class="md-nav">' + 
-		this.renderHeader() +
-		'<div id="md-nav-tree">' + this.renderTree(this.tree) + '</div>' +
-		'</nav>'
-		$('body').append(nav)
-		this.updateLayout(SIDERBARWIDTH)
+		let tmpl = '<nav class="md-nav">' +
+			'<div class="md-nav-header"></div>' +
+			'<div id="md-nav-tree">' +
+			'<ul>' +
+				'{{> list}}' +
+			'</ul>' +
+			'</div>' +
+			'</nav>'
+		let list = '{{#each items}}' +
+			'<li>' +
+				'<a href="{{content.href}}" class="js-nav-item">{{content.text}}</a>' +
+				'{{#if items}}' +
+					'<ul>{{> list}}</ul>' +
+				'{{/if}}' +
+			'</li>' +
+			'{{/each}}'
+		Handlebars.registerPartial("list", list);
+		$("body").append(Handlebars.compile(tmpl)({items: this.tree.items}))
+		this.resize(SIDERBARWIDTH)
+	}
+
+	addListener() {
 		const $nav = $('.md-nav');
 		$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
 		$nav.resize(() => {
-			this.updateLayout($nav.outerWidth())
+			this.resize($nav.outerWidth())
 		})
 		$('.md-nav ul>li a').on('click', (evt)=>{
 			$('.js-nav-item').removeClass("item-selected");
@@ -43,42 +66,22 @@ class TreeRenderer {
 		})
 	}
 
-	rerender() {
+	refresh() {
 		this.tree = this.generator.generate()
-		$('#md-nav-tree').empty()
-		this.render()
+		$('.md-nav').remove()
+		this.init()
 	}
 
-	updateLayout(sidebarWidth) {
+	resize(sidebarWidth) {
 		const $containers = $(GH_CONTAINERS)
 		const autoMarginLeft = ($(document).width() - $containers.width()) / 2
 		const shouldPushLeft = autoMarginLeft <= sidebarWidth + SPACING
-
 		$('html').css('margin-left', shouldPushLeft ? sidebarWidth : '')
-	}
-
-	renderHeader() {
-		return '<div class="md-nav-header">' + $('#readme>h3').text().trim() + '</div>'
-	}
-
-	renderTree(root) {
-		let html = '<ul>'
-		if(root.children && root.children.length) {
-			root.children.forEach((node) => {
-				html += '<li><a href="' + node.content.href + '" class="js-nav-item">' + node.content.text + '</a>'
-				if (node.children && node.children.length) {
-					html += this.renderTree(node)
-				}
-				html += '</li>'
-			})
-		}
-		html += '</ul>'
-		return html
 	}
 
 	destory() {
 		$('.md-nav').remove()
-		this.updateLayout(0)
+		this.resize(0)
 	}
 
 }
@@ -121,7 +124,7 @@ if ($('.readme').length) {
 
 	let oldUrl = window.location.href
 	const renderer = new TreeRenderer()
-	renderer.render()
+	renderer.init()
 
 	console.log("[MARKDOWN ROUTER]: generating directory tree FINISHED.")
 }
