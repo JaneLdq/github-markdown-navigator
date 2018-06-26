@@ -9,12 +9,10 @@ class TreeNode {
 		this.level = level
 		this.content = content
 		this.parent = parent
-		this.items = null
+		this.items = []
 	}
 
 	addChild(child) {
-		if (!this.items)
-			this.items = []
 		this.items.push(child)
 	}
 
