@@ -6,6 +6,9 @@
     z-index: 999999;
 
     height: 100%;
+    background-color: rgba(40, 40, 40);
+
+    transition: 0.3s;
 }
 
 .md-nav {
@@ -16,7 +19,6 @@
 
     border: none;
     border-right: 1px rgba(40, 40, 40);
-    background-color: rgba(40, 40, 40);
 
     font-family: sans-serif;
     transform: translate3d(0px, 0px, 0px);
@@ -24,12 +26,11 @@
 
 .md-nav-header {
 	width: 100%;
-	padding: 10px;
-	margin: -10px -10px 10px -10px;
+	padding-left: -10px;
 	height: 40px;
 
 	border-bottom: 1px rgb(200, 200, 200);
-	font-size: 20px;
+	font-size: 18px;
 	color: rgb(140, 180, 255);
 }
 
@@ -62,4 +63,35 @@
     right: 0;
     width: 4px;
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+.md-nav-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    z-index: 1000000;
+}
+
+.md-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#js-hide-nav-btn {
+    display: inline-block;
+    float: right;
+}
+
+#js-show-nav-btn {
+    display: none;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    transition: 0.3s
 }

@@ -26,6 +26,7 @@
             "libs/jquery.min.js", 
             "libs/jquery-ui.min.js",
             "libs/handlebars.min.js",
+            "libs/fontawesome.js",
             "content.js"
         ]}
     ],

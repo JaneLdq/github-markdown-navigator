@@ -33,14 +33,14 @@ class TreeRenderer {
 	render() {
 		let tmpl = ['<div class="md-nav-wrapper">',
 			'<nav class="md-nav">',
-			'<div class="md-nav-header">Navigator',
-			'</div>',
+			'<div class="md-nav-header"><span>Navigator</span><div class="md-nav-btn" id="js-hide-nav-btn"><i class="fas fa-angle-left"></i></div></div>',
 			'<div id="md-nav-tree">',
 			'<ul>',
 				'{{> list}}',
 			'</ul>',
 			'</div>',
-			'</nav></div>'].join('')
+			'</nav></div>',
+			'<div class="md-nav-btn" id="js-show-nav-btn"><i class="fas fa-angle-right"></i></div>'].join('')
 		let list = ['{{#each items}}',
 			'<li>',
 				'<a href="{{content.href}}" class="js-nav-item">{{content.text}}</a>',
@@ -60,9 +60,28 @@ class TreeRenderer {
 		$nav.resize(() => {
 			this.resize($nav.outerWidth())
 		})
-		$('.md-nav ul>li a').click((evt)=>{
+		$('.md-nav ul>li a').click((evt) => {
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
+		})
+		const moveLeft = -$nav.outerWidth()
+		$('#js-hide-nav-btn').click((evt) => {
+			$nav.css({
+				"margin-left": moveLeft
+			})
+			$('#js-show-nav-btn').css({
+				"display":"block"
+			})
+			this.resize(0)
+		})
+		$('#js-show-nav-btn').click((evt) => {
+			$nav.css({
+				"margin-left": 0
+			})
+			$('#js-show-nav-btn').css({
+				"display":"none"
+			})
+			this.resize($nav.outerWidth())
 		})
 	}
 
@@ -80,7 +99,7 @@ class TreeRenderer {
 	}
 
 	destory() {
-		$('.md-nav').remove()
+		$('.md-nav-wrapper').remove()
 		this.resize(0)
 	}
 
