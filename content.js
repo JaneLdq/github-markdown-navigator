@@ -1,7 +1,7 @@
 const GH_CONTAINERS = '.container, .container-lg, .container-responsive'
 const SPACING = 10
 const SIDERBARWIDTH = 260
-const MIN_SIDEBARWIDTH = 160
+const MIN_SIDEBARWIDTH = 200
 
 class TreeNode {
 
@@ -27,38 +27,40 @@ class TreeRenderer {
 
 	init() {
 		this.render()
-		this.addListener()
+		this.listen()
 	}
 
 	render() {
-		let tmpl = '<nav class="md-nav">' +
-			'<div class="md-nav-header"></div>' +
-			'<div id="md-nav-tree">' +
-			'<ul>' +
-				'{{> list}}' +
-			'</ul>' +
-			'</div>' +
-			'</nav>'
-		let list = '{{#each items}}' +
-			'<li>' +
-				'<a href="{{content.href}}" class="js-nav-item">{{content.text}}</a>' +
-				'{{#if items}}' +
-					'<ul>{{> list}}</ul>' +
-				'{{/if}}' +
-			'</li>' +
-			'{{/each}}'
+		let tmpl = ['<div class="md-nav-wrapper">',
+			'<nav class="md-nav">',
+			'<div class="md-nav-header">Navigator',
+			'</div>',
+			'<div id="md-nav-tree">',
+			'<ul>',
+				'{{> list}}',
+			'</ul>',
+			'</div>',
+			'</nav></div>'].join('')
+		let list = ['{{#each items}}',
+			'<li>',
+				'<a href="{{content.href}}" class="js-nav-item">{{content.text}}</a>',
+				'{{#if items}}',
+					'<ul>{{> list}}</ul>',
+				'{{/if}}',
+			'</li>',
+			'{{/each}}'].join('')
 		Handlebars.registerPartial("list", list);
 		$("body").append(Handlebars.compile(tmpl)({items: this.tree.items}))
 		this.resize(SIDERBARWIDTH)
 	}
 
-	addListener() {
-		const $nav = $('.md-nav');
+	listen() {
+		const $nav = $('.md-nav-wrapper')
 		$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
 		$nav.resize(() => {
 			this.resize($nav.outerWidth())
 		})
-		$('.md-nav ul>li a').on('click', (evt)=>{
+		$('.md-nav ul>li a').click((evt)=>{
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
 		})
