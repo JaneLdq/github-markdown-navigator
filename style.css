@@ -8,7 +8,7 @@
     height: 100%;
     background-color: rgba(40, 40, 40);
 
-    transition: 0.3s;
+    transition: margin-left 0.3s;
 }
 
 .md-nav {

@@ -64,10 +64,9 @@ class TreeRenderer {
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
 		})
-		const moveLeft = -$nav.outerWidth()
 		$('#js-hide-nav-btn').click((evt) => {
 			$nav.css({
-				"margin-left": moveLeft
+				"margin-left": -$nav.outerWidth()
 			})
 			$('#js-show-nav-btn').css({
 				"display":"block"
