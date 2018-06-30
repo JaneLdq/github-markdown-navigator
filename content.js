@@ -25,12 +25,28 @@ class TreeRenderer {
 		this.tree = this.generator.generate()
 	}
 
-	init() {
-		this.render()
-		this.listen()
+	refresh() {
+		this._destory()
+		if ($('.readme').length) {
+			this.tree = this.generator.generate()
+			this._show()
+		}
+		
 	}
 
-	render() {
+	_destory() {
+		this.$nav = null
+		$('.md-nav-wrapper').remove()
+		$('.md-nav-btn').remove()
+		this._resize(0)
+	}
+
+	_show() {
+		this._render()
+		this._listen()
+	}
+
+	_render() {
 		let tmpl = ['<div class="md-nav-wrapper">',
 			'<nav class="md-nav">',
 			'<div class="md-nav-header"><span>Navigator</span><div class="md-nav-btn" id="js-hide-nav-btn"><i class="fas fa-angle-left"></i></div></div>',
@@ -51,55 +67,56 @@ class TreeRenderer {
 			'{{/each}}'].join('')
 		Handlebars.registerPartial("list", list);
 		$("body").append(Handlebars.compile(tmpl)({items: this.tree.items}))
-		this.resize(SIDERBARWIDTH)
+
+		this._fit()
 	}
 
-	listen() {
-		const $nav = $('.md-nav-wrapper')
-		$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
-		$nav.resize(() => {
-			this.resize($nav.outerWidth())
-		})
+	_listen() {
+		this.$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
+		this.$nav.resize(() => {this._fit()})
 		$('.md-nav ul>li a').click((evt) => {
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
 		})
-		$('#js-hide-nav-btn').click((evt) => {
-			$nav.css({
-				"margin-left": -$nav.outerWidth()
+		$('#js-hide-nav-btn').click(() => {
+			this.$nav.css({
+				"margin-left": -this.$nav.outerWidth()
 			})
 			$('#js-show-nav-btn').css({
 				"display":"block"
 			})
-			this.resize(0)
+			this._hide()
 		})
-		$('#js-show-nav-btn').click((evt) => {
-			$nav.css({
+		$('#js-show-nav-btn').click(() => {
+			this.$nav.css({
 				"margin-left": 0
 			})
 			$('#js-show-nav-btn').css({
 				"display":"none"
 			})
-			this.resize($nav.outerWidth())
+			this._fit()
+		})
+		$(document).on('pjax:success', () => {
+  			this.refresh()
 		})
 	}
 
-	refresh() {
-		this.tree = this.generator.generate()
-		$('.md-nav').remove()
-		this.init()
+	_fit() {
+		if (!this.$nav) {
+			this.$nav = $('.md-nav-wrapper')
+		}
+		this._resize(this.$nav.outerWidth())
 	}
 
-	resize(sidebarWidth) {
+	_hide() {
+		this._resize(0)
+	}
+
+	_resize(sidebarWidth) {
 		const $containers = $(GH_CONTAINERS)
 		const autoMarginLeft = ($(document).width() - $containers.width()) / 2
 		const shouldPushLeft = autoMarginLeft <= sidebarWidth + SPACING
 		$('html').css('margin-left', shouldPushLeft ? sidebarWidth : '')
-	}
-
-	destory() {
-		$('.md-nav-wrapper').remove()
-		this.resize(0)
 	}
 
 }
@@ -137,12 +154,5 @@ class TreeGenerator {
 
 }
 
-if ($('.readme').length) {
-	console.log("[MARKDOWN ROUTER]: START generating directory tree...")
-
-	let oldUrl = window.location.href
-	const renderer = new TreeRenderer()
-	renderer.init()
-
-	console.log("[MARKDOWN ROUTER]: generating directory tree FINISHED.")
-}
+const renderer = new TreeRenderer()
+renderer.refresh()

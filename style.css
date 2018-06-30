@@ -8,7 +8,7 @@
     height: 100%;
     background-color: rgba(40, 40, 40);
 
-    transition: margin-left 0.3s;
+    transition: margin-left 0.1s;
 }
 
 .md-nav {
@@ -90,8 +90,10 @@
 
 #js-show-nav-btn {
     display: none;
-    position: absolute;
+    position: fixed;
     left: 10px;
     top: 10px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.2);
     transition: 0.3s
 }
