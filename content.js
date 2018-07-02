@@ -3,6 +3,10 @@ const SPACING = 10
 const SIDERBARWIDTH = 260
 const MIN_SIDEBARWIDTH = 200
 
+/**
+ * TreeNode is a simple structure. It is defined
+ * for generating tree.
+ */
 class TreeNode {
 
 	constructor(level, content, parent) {
@@ -18,13 +22,28 @@ class TreeNode {
 
 }
 
+/**
+ * TreeRenderer is defined to render the navigator.
+ */
 class TreeRenderer {
 
+	/**
+	 * Initialize TreeGenerator instance and
+	 * add listener for 'pjax:success' event
+	 * @constructor
+	 */
 	constructor() {
 		this.generator = new TreeGenerator()
-		this.tree = this.generator.generate()
+		$(document).on('pjax:success', () => {
+  			this.refresh()
+		})
 	}
 
+	/**
+	 * refresh() destroies the old navigator,
+	 * and renders a new own according to 
+	 * current markdown structure.
+	 */
 	refresh() {
 		this._destory()
 		if ($('.readme').length) {
@@ -34,6 +53,9 @@ class TreeRenderer {
 		
 	}
 
+	/**
+	 * _destory() remove the navigator and reset layout
+	 */
 	_destory() {
 		this.$nav = null
 		$('.md-nav-wrapper').remove()
@@ -41,15 +63,26 @@ class TreeRenderer {
 		this._resize(0)
 	}
 
+	/**
+	 * _show() renders and shows the navigator
+	 */
 	_show() {
 		this._render()
 		this._listen()
 	}
 
+	/**
+	 * _render() defines the html template, renders it,
+	 * adds it to the page and adjust the layout.
+	 * It uses Handlebars.js as template engine.
+	 */
 	_render() {
 		let tmpl = ['<div class="md-nav-wrapper">',
 			'<nav class="md-nav">',
-			'<div class="md-nav-header"><span>Navigator</span><div class="md-nav-btn" id="js-hide-nav-btn"><i class="fas fa-angle-left"></i></div></div>',
+			'<div class="md-nav-header">',
+				'<span><i class="far fa-laugh-wink"></i></span>',
+				'<div class="md-nav-btn" id="js-hide-nav-btn"><i class="fas fa-angle-left"></i></div>',
+			'</div>',
 			'<div id="md-nav-tree">',
 			'<ul>',
 				'{{> list}}',
@@ -71,13 +104,19 @@ class TreeRenderer {
 		this._fit()
 	}
 
+	/**
+	 * _listen() adds listeners for user actions on navigator
+	 */
 	_listen() {
+		// add listener for resizing
 		this.$nav.resizable({ handles: 'e', minWidth: MIN_SIDEBARWIDTH})
 		this.$nav.resize(() => {this._fit()})
 		$('.md-nav ul>li a').click((evt) => {
 			$('.js-nav-item').removeClass("item-selected");
 			$(evt.target).addClass('item-selected');
 		})
+
+		// add listener for showing and hiding
 		$('#js-hide-nav-btn').click(() => {
 			this.$nav.css({
 				"margin-left": -this.$nav.outerWidth()
@@ -96,11 +135,11 @@ class TreeRenderer {
 			})
 			this._fit()
 		})
-		$(document).on('pjax:success', () => {
-  			this.refresh()
-		})
 	}
 
+	/**
+	 * _fit() adjusts the width of navigator and github page
+	 */
 	_fit() {
 		if (!this.$nav) {
 			this.$nav = $('.md-nav-wrapper')
@@ -108,10 +147,17 @@ class TreeRenderer {
 		this._resize(this.$nav.outerWidth())
 	}
 
+	/**
+	 * _hide() hides the navigator
+	 */
 	_hide() {
 		this._resize(0)
 	}
 
+	/**
+	 * _resize() resizes the navigator with given width
+	 * @param int sidebarWidth
+	 */
 	_resize(sidebarWidth) {
 		const $containers = $(GH_CONTAINERS)
 		const autoMarginLeft = ($(document).width() - $containers.width()) / 2
@@ -121,8 +167,25 @@ class TreeRenderer {
 
 }
 
+/**
+ * TreeGenerator is a tool class. It is defined to
+ * generate the directory structure of the markdown
+ * shown on the page.
+ */
 class TreeGenerator {
 
+	/**
+	 * generate() returns a tree with the structure shown below:
+	 * - root
+	 *	- content
+	 *	- items
+	 *	 	-item1
+	 *			-parent
+	 *			-content
+	 *			-items
+	 *		-item2
+	 *		-...
+	 */
 	generate() {
 		const rootNode = new TreeNode(0, null, null)
 		let parent = rootNode
