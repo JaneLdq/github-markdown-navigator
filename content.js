@@ -1,7 +1,6 @@
 const GH_CONTAINERS = '.container, .container-lg, .container-responsive'
 const SPACING = 10
-const SIDERBARWIDTH = 260
-const MIN_SIDEBARWIDTH = 200
+const MIN_SIDEBARWIDTH = 160
 
 /**
  * TreeNode is a simple structure. It is defined
@@ -143,6 +142,9 @@ class TreeRenderer {
 	_fit() {
 		if (!this.$nav) {
 			this.$nav = $('.md-nav-wrapper')
+		}
+		if (this.$nav.outerWidth() < MIN_SIDEBARWIDTH) {
+			this.$nav.css({width: MIN_SIDEBARWIDTH})
 		}
 		this._resize(this.$nav.outerWidth())
 	}
