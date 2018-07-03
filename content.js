@@ -49,7 +49,7 @@ class TreeRenderer {
 			this.tree = this.generator.generate()
 			this._show()
 		}
-		
+        // TODO: adjust width when window width change
 	}
 
 	/**
