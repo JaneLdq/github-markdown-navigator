@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Github Markdown Nav",
+    "name": "Github Markdown Navigator",
     "description": "Generate Navigation Tree for Markdown on Github",
     "version": "1.0",
     "permissions": ["activeTab", "declarativeContent", "storage"],
@@ -23,15 +23,17 @@
             "style.css"
         ],
         "js": [
-            "libs/jquery.min.js", 
-            "libs/jquery-ui.min.js",
-            "libs/handlebars.min.js",
             "libs/fontawesome.js",
             "content.js"
         ]}
     ],
     "web_accessible_resources": [
-        "template.html"
+        "libs/jquery.min.js", 
+        "libs/jquery-ui.min.js",
+        "src/index.js",
+        "src/tree-generator.js",
+        "src/tree-node.js",
+        "src/tree-renderer.js"
     ],
     "icons": {
         "16": "images/icon16.png",
