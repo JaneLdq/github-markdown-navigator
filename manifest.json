@@ -3,7 +3,7 @@
     "name": "Github Markdown Navigator",
     "description": "Generate Navigation Tree for Markdown on Github",
     "version": "1.0",
-    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "permissions": ["declarativeContent"],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
@@ -30,15 +30,13 @@
     "web_accessible_resources": [
         "libs/jquery.min.js", 
         "libs/jquery-ui.min.js",
-        "src/index.js",
-        "src/tree-generator.js",
-        "src/tree-node.js",
-        "src/tree-renderer.js"
+        "src/*.js"
     ],
     "icons": {
         "16": "images/icon16.png",
         "32": "images/icon32.png",
         "48": "images/icon48.png",
         "128": "images/icon128.png"
-    }
+    },
+    "author": "Jane Liao"
 }
